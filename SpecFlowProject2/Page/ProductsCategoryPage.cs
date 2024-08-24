@@ -1,11 +1,6 @@
 ﻿using Final_Task.Pages;
 using OpenQA.Selenium;
 using SpecFlowProject2.Drivers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpecFlowProject2.Page
 {
@@ -14,10 +9,15 @@ namespace SpecFlowProject2.Page
         public ProductsCategoryPage() { }
         private static ProductsCategoryPage _productsPage;
         public static ProductsCategoryPage Instance => _productsPage ?? (_productsPage = new ProductsCategoryPage());
-        IWebElement SelectedBrand => DriverManager.Instance().FindElement(By.XPath("//li[@id='p_123/331810']//span[contains(text(),'JOYIN')]"));
+
+        By FiltersButton => By.XPath("//span[@id='s-all-filters' and @role='button']");
+        By SelectedBrand => By.XPath("//li[@id='p_123/331810']//span[contains(text(),'JOYIN')]");
+
         public void FilteringByBrand()
         {
-            SelectedBrand.Click();
+            WaitForElementToBeVisible(SelectedBrand);
+            WaitForElementToBeClickable(SelectedBrand);
+            FindElement(SelectedBrand).Click();
         }
     }
 }

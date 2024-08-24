@@ -1,11 +1,6 @@
 ﻿using Final_Task.Pages;
 using OpenQA.Selenium;
 using SpecFlowProject2.Drivers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpecFlowProject2.Page
 {
@@ -14,20 +9,27 @@ namespace SpecFlowProject2.Page
         public FilteringResultsPage() { }
         private static FilteringResultsPage filter_page;
         public static FilteringResultsPage Instance => filter_page ?? (filter_page = new FilteringResultsPage());
-        IWebElement ProductName => DriverManager.Instance().FindElement(By.XPath("//span[@class = 'a-size-base-plus a-color-base a-text-normal']"));
-        IWebElement ProductPrice => DriverManager.Instance().FindElement(By.XPath("//span[@class = 'a-price-whole']"));
+
+        private readonly By productNameLocator = By.XPath("//span[@class='a-size-base-plus a-color-base a-text-normal']");
+        private readonly By productPriceLocator = By.XPath("//span[@class='a-price-whole']");
+
         public string GetProductName()
         {
-            return ProductName.Text;
+            WaitForElementToBeVisible(productNameLocator);   
+            return FindElement(productNameLocator).Text;
         }
+
         public string GetProductPrice()
         {
-            return ProductPrice.Text;
+            WaitForElementToBeVisible(productPriceLocator);   
+            return FindElement(productPriceLocator).Text;
         }
+
         public void ClickOnProductNameButton()
         {
-            ProductName.Click();
-            Thread.Sleep(2000);
+            ScrollToElement(productNameLocator);   
+            WaitForElementToBeClickable(productNameLocator);   
+            FindElement(productNameLocator).Click();
         }
     }
 }

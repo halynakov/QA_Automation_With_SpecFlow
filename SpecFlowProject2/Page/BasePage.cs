@@ -1,18 +1,68 @@
-﻿using SpecFlowProject2.Drivers;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
+using SpecFlowProject2.Drivers;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using System.Threading;
 
 namespace Final_Task.Pages
 {
     public class BasePage
     {
         public BasePage() { }
+
+        protected void WaitForElementToBeVisible(By locator, int timeoutInSeconds = 10)
+        {
+            var wait = new WebDriverWait(DriverManager.Instance(), TimeSpan.FromSeconds(timeoutInSeconds));
+            wait.Until(ExpectedConditions.ElementIsVisible(locator));
+        }
+
+        protected void WaitForElementToBeVisible(IWebElement element, int timeoutInSeconds = 10)
+        {
+            var wait = new WebDriverWait(DriverManager.Instance(), TimeSpan.FromSeconds(timeoutInSeconds));
+            wait.Until(driver => element.Displayed);
+        }
+
+        protected void WaitForElementToBeClickable(By locator, int timeoutInSeconds = 10)
+        {
+            var wait = new WebDriverWait(DriverManager.Instance(), TimeSpan.FromSeconds(timeoutInSeconds));
+            wait.Until(ExpectedConditions.ElementToBeClickable(locator));
+        }
+
+        protected void WaitForElementToDisappear(By locator, int timeoutInSeconds = 10)
+        {
+            var wait = new WebDriverWait(DriverManager.Instance(), TimeSpan.FromSeconds(timeoutInSeconds));
+            wait.Until(ExpectedConditions.InvisibilityOfElementLocated(locator));
+        }
+
+        protected void WaitForElementTextToChange(By locator, string expectedText, int timeoutInSeconds = 10)
+        {
+            var wait = new WebDriverWait(DriverManager.Instance(), TimeSpan.FromSeconds(timeoutInSeconds));
+            wait.Until(driver =>
+            {
+                try
+                {
+                    var element = driver.FindElement(locator);
+                    return element.Text.Contains(expectedText);
+                }
+                catch (StaleElementReferenceException)
+                {
+                    var element = driver.FindElement(locator);
+                    return element.Text.Contains(expectedText);
+                }
+            });
+        }
+
+        protected void ScrollToElement(By locator)
+        {
+            var element = DriverManager.Instance().FindElement(locator);
+            ((IJavaScriptExecutor)DriverManager.Instance()).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+        }
+
+        protected void ScrollToElement(IWebElement element)
+        {
+            ((IJavaScriptExecutor)DriverManager.Instance()).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+        }
 
         public IWebElement FindElement(By locator)
         {

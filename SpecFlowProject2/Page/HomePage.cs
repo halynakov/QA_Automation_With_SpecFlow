@@ -1,12 +1,7 @@
-﻿using Final_Task.Pages;
-using OpenQA.Selenium.Interactions;
+﻿using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium;
 using SpecFlowProject2.Drivers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Final_Task.Pages;
 
 namespace SpecFlowProject2.Page
 {
@@ -14,86 +9,108 @@ namespace SpecFlowProject2.Page
     {
         public HomePage() { }
         private string URL => "https://www.amazon.com";
-        IWebElement ChooseLanguageButton => DriverManager.Instance().FindElement(By.XPath("//span[text() = 'Deutsch']"));
-        IWebElement InputSearchButton => DriverManager.Instance().FindElement(By.XPath("//input[@type='text']"));
-        IWebElement SearchButton => DriverManager.Instance().FindElement(By.XPath("//input[@id='nav-search-submit-button']"));
-        IWebElement SectionButton => DriverManager.Instance().FindElement(By.XPath("//span[text()='Headsets']"));
-        IWebElement LocationButton => DriverManager.Instance().FindElement(By.XPath("//span[@id = 'glow-ingress-line2']"));
-        IWebElement LocationLabelButton => DriverManager.Instance().FindElement(By.XPath("//span[@role='radiogroup']"));
-        IWebElement CountryButton => DriverManager.Instance().FindElement(By.XPath("//a[@tabindex = '-1' and text() =  'United Kingdom']"));
-        IWebElement DoneButton => DriverManager.Instance().FindElement(By.XPath("//button[@name = 'glowDoneButton']"));
-        IWebElement LanguageButton => DriverManager.Instance().FindElement(By.XPath("//span[@class ='nav-line-2']"));
-        IWebElement SectionName => DriverManager.Instance().FindElement(By.XPath("//a[text() = 'Geschenkkarten ']"));
-        IWebElement CategoryName => DriverManager.Instance().FindElement(By.XPath("//span[contains(text(),'Learning Toys')]"));
-        IWebElement AllButton => DriverManager.Instance().FindElement(By.XPath("//span[@class = 'hm-icon-label']"));
-        IWebElement SignInButton => DriverManager.Instance().FindElement(By.XPath("//div[@id = 'hmenu-customer-name']"));
+
+        By ChooseLanguageButton => By.XPath("//span[text() = 'Deutsch']");
+        By InputSearchButton => By.XPath("//input[@type='text']");
+        By SearchButton => By.XPath("//input[@id='nav-search-submit-button']");
+        By SectionButton => By.XPath("//span[text()='Headsets']");
+        By LocationButton => By.XPath("//span[@id = 'glow-ingress-line2']");
+        By LocationLabelButton => By.XPath("//span[@role='radiogroup']");
+        By CountryButton => By.XPath("//a[@tabindex = '-1' and text() =  'United Kingdom']");
+        By DoneButton => By.XPath("//button[@name = 'glowDoneButton']");
+        By LanguageButton => By.XPath("//span[@class ='nav-line-2']");
+        By SectionName => By.XPath("//a[text() = 'Geschenkkarten ']");
+        By CategoryName => By.XPath("//span[contains(text(),'Learning Toys')]");
+        By AllButton => By.XPath("//span[@class = 'hm-icon-label']");
+        By SignInButton => By.XPath("//div[@id = 'hmenu-customer-name']");
 
         private static HomePage homePage;
         public static HomePage Instance => homePage ?? (homePage = new HomePage());
+
         public void OpenHomePage()
         {
             DriverManager.Instance().Navigate().GoToUrl(URL);
-            Thread.Sleep(10000);
+            WaitForElementToBeVisible(InputSearchButton, 10);
         }
+
         public void EnterSearchInputButton(string name)
         {
-            InputSearchButton.SendKeys(name);
+            FindElement(InputSearchButton).SendKeys(name);
         }
+
         public void ClickSearchButton()
         {
-            SearchButton.Click();
+            WaitForElementToBeClickable(SearchButton, 10);
+            FindElement(SearchButton).Click();
         }
+
         public void ClickSectionButton()
         {
-            SectionButton.Click();
+            WaitForElementToBeClickable(SectionButton, 10);
+            FindElement(SectionButton).Click();
         }
+
         public void ClickLocationButton()
         {
-            LocationButton.Click();
-            Thread.Sleep(2000);
+            WaitForElementToBeClickable(LocationButton, 10);
+            FindElement(LocationButton).Click();
         }
+
         public void ChangeLocationButton()
         {
-            LocationLabelButton.Click();
-            Thread.Sleep(2000);
-            CountryButton.Click();
+            WaitForElementToBeClickable(LocationLabelButton, 10);
+            FindElement(LocationLabelButton).Click();
+            WaitForElementToBeClickable(CountryButton, 10);
+            FindElement(CountryButton).Click();
         }
+
         public void ClickDoneButton()
         {
-            DoneButton.Click();
-            Thread.Sleep(2000);
+            WaitForElementToBeClickable(DoneButton, 10);
+            FindElement(DoneButton).Click();
         }
+
         public string GetLocation()
         {
-            return LocationButton.Text;
+            WaitForElementTextToChange(LocationButton, "United Kingdom", 10);
+            return FindElement(LocationButton).Text;
         }
+
         public void HoverLanguageButton()
         {
             var actions = new Actions(DriverManager.Instance());
-            actions.MoveToElement(LanguageButton).Perform();
-            Thread.Sleep(3000);
+            actions.MoveToElement(FindElement(LanguageButton)).Perform();
+            WaitForElementToBeVisible(ChooseLanguageButton, 10);
         }
+
         public void ClickLanguageButton()
         {
-            ChooseLanguageButton.Click();
-            Thread.Sleep(2000);
+            WaitForElementToBeClickable(ChooseLanguageButton, 10);
+            FindElement(ChooseLanguageButton).Click();
         }
+
         public string GetSectionName()
         {
-            return SectionName.Text;
+            WaitForElementToBeVisible(SectionName, 10);
+            return FindElement(SectionName).Text;
         }
+
         public void ClickOnCategory()
         {
-            CategoryName.Click();
+            WaitForElementToBeClickable(CategoryName, 10);
+            FindElement(CategoryName).Click();
         }
+
         public void ClickDropdownMenu()
         {
-            AllButton.Click();
-            Thread.Sleep(2000);
+            WaitForElementToBeClickable(AllButton, 10);
+            FindElement(AllButton).Click();
         }
+
         public void ClickSignInButton()
         {
-            SignInButton.Click();
-            Thread.Sleep(2000);
+            WaitForElementToBeClickable(SignInButton, 10);
+            FindElement(SignInButton).Click();
         }
-    }}
+    }
+}

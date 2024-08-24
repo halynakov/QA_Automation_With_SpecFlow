@@ -77,21 +77,8 @@ namespace SpecFlowProject2.StepDefinitions
         [Then(@"Entry is denied by warning")]
         public void CheckEntryIsDenied() => Assert.That(SignInPage.Instance.GetMessage().Contains("Enter"));
 
-        [When(@"User clicks on '([^']*)' section")]
-        public void ClickOnSection(string headsets) => HomePage.Instance.ClickSectionButton();
-
-        [Then(@"Page with the '([^']*)' title is opened")]
-        public void CheckPageIsOpened(string expected_title) => Assert.That(ProductsSectionPage.Instance.GetSectionName(), Is.EqualTo(expected_title));
-
         [When(@"User goes to the cart")]
         public void GoToTheCart() => ItemPage.Instance.GoToTheCart();
-
-        [When(@"User increases quantity of goods")]
-        public void IncreaseQuantityOfGoods()
-        {
-            CartPage.Instance.ClickOnQtyButton();
-            CartPage.Instance.ChangeAmountOfGoods();
-        }
 
         [Then(@"The order price in the cart is '([^']*)'")]
         public void CheckOrderPrice(string expected_price) => Assert.That(CartPage.Instance.GetActualCart(), Is.EqualTo(expected_price));

@@ -1,11 +1,6 @@
 ﻿using Final_Task.Pages;
 using OpenQA.Selenium;
 using SpecFlowProject2.Drivers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpecFlowProject2.Page
 {
@@ -14,33 +9,49 @@ namespace SpecFlowProject2.Page
         public CartPage() { }
         private static CartPage cartpage;
         public static CartPage Instance => cartpage ?? (cartpage = new CartPage());
-        IWebElement QtyButton => DriverManager.Instance().FindElement(By.XPath("//span [@class = 'a-dropdown-label']"));
-        IWebElement Qty2Button => DriverManager.Instance().FindElement(By.XPath("//a [@id = 'quantity_2']"));
-        IWebElement NewPrice => DriverManager.Instance().FindElement(By.XPath("//span [@class = 'a-size-medium a-color-base sc-price sc-white-space-nowrap']"));
-        IWebElement DeleteButton => DriverManager.Instance().FindElement(By.XPath("//input[@value = 'Delete']"));
-        IWebElement Title => DriverManager.Instance().FindElement(By.XPath("//h2"));
+
+        private readonly By qtyButtonLocator = By.XPath("//span[@class='a-dropdown-label']");
+        private readonly By qty2ButtonLocator = By.XPath("(//a[@id='quantity_2' and @aria-hidden='true'])[3]");
+        private readonly By newPriceLocator = By.XPath("//span[@class='a-size-medium a-color-base sc-price sc-white-space-nowrap']");
+        private readonly By deleteButtonLocator = By.XPath("//input[@value='Delete']");
+        private readonly By titleLocator = By.XPath("//h2");
 
         public void ClickOnQtyButton()
         {
-            QtyButton.Click();
+            WaitForElementToBeClickable(qtyButtonLocator);
+            var qtyButton = FindElement(qtyButtonLocator);
+            qtyButton.Click();
+            WaitForElementToBeClickable(qty2ButtonLocator);
         }
+
         public void ClickOnDeleteButton()
         {
-            DeleteButton.Click();
-            Thread.Sleep(1000);
+            WaitForElementToBeClickable(deleteButtonLocator);
+            var deleteButton = FindElement(deleteButtonLocator);
+            deleteButton.Click();
+            WaitForElementToDisappear(deleteButtonLocator);
         }
+
         public void ChangeAmountOfGoods()
         {
-            Qty2Button.Click();
-            Thread.Sleep(1000);
+            WaitForElementToBeClickable(qty2ButtonLocator);
+            var qty2Button = FindElement(qty2ButtonLocator);
+            ScrollToElement(qty2ButtonLocator); 
+            qty2Button.Click();
         }
+
         public string GetActualCart()
         {
-            return NewPrice.Text;
+            WaitForElementToBeVisible(newPriceLocator);
+            var newPrice = FindElement(newPriceLocator);
+            return newPrice.Text;
         }
+
         public string GetTitle()
         {
-            return Title.Text;
+            WaitForElementTextToChange(titleLocator, "Cart is empty", 10);
+            var title = FindElement(titleLocator);
+            return title.Text;
         }
     }
 }

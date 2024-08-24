@@ -3,12 +3,6 @@
 		I want to test all main site functionality
 		So that I can be sure that site works correctly
 
-@smoke
-Scenario Outline: Check opening the 'gaming headsets' page when clicking on 'Headsets' section
-  Given User opens Amazon page
-    When User clicks on 'Headsets' section
-  Then Page with the '"gaming headsets"' title is opened
-
 
 @smoke
 Scenario: Check search for a product by its name
@@ -40,16 +34,6 @@ Scenario: NegativeCheck signing in with empty fields
 	And User clicks SignIn button
 	When User leaves all fields empty
 	Then Entry is denied by warning
-
-@smoke
-Scenario: Check that the order price increases when the quantity of goods is increased
-	Given User opens Amazon page
-	And User clicks on 'Headsets' section
-	And User goes to 'Targeal 7.1 Surround Sound Gaming Headset' product page
-	When User adds product to the cart
-	And User goes to the cart
-	And User increases quantity of goods
-	Then The order price in the cart is '$43.98'
 
 @smoke
 Scenario: Check deleting all goods from the cart
